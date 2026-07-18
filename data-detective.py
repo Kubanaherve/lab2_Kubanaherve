@@ -169,7 +169,37 @@ def search_tweets(tweets, keyword):
     """
     QUEST 4: Search for a keyword and extract matching tweets into a new list.
     """
-    pass
+    matching_tweets = []
+
+    keyword = input("Enter a keyword to search for: ")
+    search_word = keyword.strip().lower()
+
+    if search_word == "":
+        print("Error: No keyword entered. Please type a word to search.")
+        print()
+        return matching_tweets
+
+    for tweet in tweets:
+        text = str(tweet.get("Text", "") or "").lower()
+        if search_word in text:
+            matching_tweets.append(tweet)
+
+    print("Keyword Search Results")
+    print("----------------------")
+    print("Matches found:", len(matching_tweets))
+    print()
+
+    i = 0
+    while i < len(matching_tweets):
+        t = matching_tweets[i]
+        print("Match:", i + 1)
+        print("Username:", t["Username"])
+        print("Likes:", t["Likes"])
+        print("Text:", t["Text"])
+        print()
+        i = i + 1
+
+    return matching_tweets
 
 if __name__ == "__main__":
     dataset = load_raw_data("twitter_dataset.csv")
@@ -193,3 +223,5 @@ if __name__ == "__main__":
     # quest 3
     sorted_dataset = custom_sort_by_likes(clean_dataset)
 
+    # quest 4
+    search_results = search_tweets(clean_dataset, "")
