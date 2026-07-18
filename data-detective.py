@@ -122,7 +122,48 @@ def custom_sort_by_likes(tweets):
     QUEST 3: Implement Bubble Sort or Selection Sort to sort the list 
     by 'Likes' in descending order. NO .sort() allowed!
     """
-    pass
+    # copy list first
+    sorted_tweets = []
+    for tweet in tweets:
+        sorted_tweets.append(tweet)
+
+    n = len(sorted_tweets)
+
+    # bubble sort (highest likes first)
+    i = 0
+    while i < n - 1:
+        j = 0
+        while j < n - i - 1:
+            left = int(sorted_tweets[j]["Likes"])
+            right = int(sorted_tweets[j + 1]["Likes"])
+
+            if left < right:
+                temp = sorted_tweets[j]
+                sorted_tweets[j] = sorted_tweets[j + 1]
+                sorted_tweets[j + 1] = temp
+
+            j = j + 1
+        i = i + 1
+
+    print("Top 10 Most Liked Tweets")
+    print("------------------------")
+
+    # print only top 10
+    limit = 10
+    if n < 10:
+        limit = n
+
+    k = 0
+    while k < limit:
+        t = sorted_tweets[k]
+        print("Rank:", k + 1)
+        print("Username:", t["Username"])
+        print("Likes:", t["Likes"])
+        print("Text:", t["Text"])
+        print()
+        k = k + 1
+
+    return sorted_tweets
 
 def search_tweets(tweets, keyword):
     """
@@ -148,4 +189,7 @@ if __name__ == "__main__":
 
     # quest 2
     viral = find_viral_tweet(clean_dataset)
+
+    # quest 3
+    sorted_dataset = custom_sort_by_likes(clean_dataset)
 
