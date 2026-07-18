@@ -19,9 +19,9 @@ chmod +x feed-analyzer.sh
 
 Shows the top 5 users with the most tweets.
 
-## Bubble Sort
+## My Custom sort Algorithm
 
-I compare two tweets next to each other and swap them if the likes are in the wrong order. I repeat until the list is from highest likes to lowest.
+I chose to use Bubble Sort Algorithm hence, I compare two tweets next to each other and swap them if the likes are in the wrong order. I repeat until the list is from highest likes to lowest.
 
 ## Files
 
