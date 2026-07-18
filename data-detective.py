@@ -14,6 +14,7 @@ def load_raw_data(filename):
     with open(filename, mode='r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         for row in reader:
+            # skip totally empty rows
             text = str(row.get("Text", "") or "").strip()
             likes = str(row.get("Likes", "") or "").strip()
             retweets = str(row.get("Retweets", "") or "").strip()
@@ -41,10 +42,12 @@ def clean_data(tweets):
         likes_value = str(tweet.get("Likes", "") or "").strip()
         retweets_value = str(tweet.get("Retweets", "") or "").strip()
 
+        # no text = remove the row
         if text_value == "":
             rows_removed = rows_removed + 1
             continue
 
+        # likes
         if likes_value == "":
             likes_value = "0"
             fields_fixed = fields_fixed + 1
@@ -55,6 +58,7 @@ def clean_data(tweets):
                 likes_value = "0"
                 fields_fixed = fields_fixed + 1
 
+        # retweets
         if retweets_value == "":
             retweets_value = "0"
             fields_fixed = fields_fixed + 1
@@ -88,7 +92,30 @@ def find_viral_tweet(tweets):
     QUEST 2: Loop through the list to find the tweet with the highest 'Likes'.
     Do not use the max() function.
     """
-    pass
+    if len(tweets) == 0:
+        print("Error: No tweets available to find a viral tweet.")
+        return None
+
+    # start with first tweet
+    viral_tweet = tweets[0]
+    highest_likes = int(viral_tweet["Likes"])
+
+    i = 1
+    while i < len(tweets):
+        current_likes = int(tweets[i]["Likes"])
+        if current_likes > highest_likes:
+            highest_likes = current_likes
+            viral_tweet = tweets[i]
+        i = i + 1
+
+    print("Viral Tweet")
+    print("-----------")
+    print("Username:", viral_tweet["Username"])
+    print("Likes:", viral_tweet["Likes"])
+    print("Text:", viral_tweet["Text"])
+    print()
+
+    return viral_tweet
 
 def custom_sort_by_likes(tweets):
     """
@@ -112,4 +139,13 @@ if __name__ == "__main__":
 
     print("Loaded " + str(len(dataset)) + " raw tweets.\n")
 
+    # quest 1
     clean_dataset = clean_data(dataset)
+
+    if len(clean_dataset) == 0:
+        print("Error: No valid tweets left after cleaning.")
+        sys.exit(1)
+
+    # quest 2
+    viral = find_viral_tweet(clean_dataset)
+
